@@ -22,16 +22,25 @@ fetchAllBooks(){
 }
 
 /* Function to Search book by query*/
-searchBookByQuery(query){	
-	BooksAPI.search(query).then(data => {
-    if(data.error){
-      this.setState({books : [] })
-    } else {
-      this.renderBookWithStatus(data);
-    } 
-	this.setState({query});
+searchBookByQuery(event) {	
+  
+  const query = event.target.value
+  this.setState({query: query})
 
-  });
+  if(query) {
+    BooksAPI.search(query).then(data => {
+      if(data.error){
+        this.setState({books : [] })
+      } else {
+        this.renderBookWithStatus(data);
+      } 
+      //this.setState({query});
+
+    });
+  } else {
+    this.setState({books : [] })
+  }
+	
 }
 
 /*Render book items in search page with default shelf value.*/
@@ -107,7 +116,7 @@ showSearchResults(){
                       <div className="search-books-input-wrapper">
                         
                         <input type="text" placeholder="Search by title or author" value={this.state.query}
-                          onChange={event => this.searchBookByQuery(event.target.value)}/>
+                          onChange={event => this.searchBookByQuery(event)}/>
 
                       </div>
                     </div>
